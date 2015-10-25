@@ -16,14 +16,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <fmt:setBundle basename="bundle" var="msgs"/>
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+        >
 
 <head>
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Polymer Starter Kit"/>
-    <title>Polymer Starter Kit</title>
+    <title>${msgs.resourceBundle['ApplicationName']} -- ${msgs.resourceBundle['LoginTitle']}</title>
     <!-- Place favicon.ico in the `app/` directory -->
 
     <!-- Chrome for Android theme color -->
@@ -75,7 +75,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <div class="horizontal center-justified layout login-subtitle">${msgs.resourceBundle['LoginSubTitle']}</div>
             <!-- Use a standard form instead if <iron-form> because it uses Ajax and doesn't work with redirects -->
-            <form id="loginForm" method="post" action="${mvc.contextPath}/resources/login"
+            <form id="loginForm" method="post" action="${mvc.contextPath}${mvc.applicationPath}/login"
                   disable-native-valid>
                 <div class="vertical center layout login-panel">
                     <paper-input id="paperUserId" class="flex" error-message="${msgs.resourceBundle['InvalidUserId']}"

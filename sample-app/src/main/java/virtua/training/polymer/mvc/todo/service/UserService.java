@@ -1,10 +1,12 @@
-package virtua.training.polymer.mvc.todo;
+package virtua.training.polymer.mvc.todo.service;
 
-import com.sun.xml.internal.xsom.impl.scd.Iterators;
 import virtua.training.polymer.mvc.todo.model.User;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -19,10 +21,12 @@ public class UserService {
 
     private List<User> activeUsers;
     private Map<String, User> users;
+    private User systemUser;
 
     public UserService() {
         activeUsers = new ArrayList<>();
         users = new ConcurrentHashMap<>();
+        systemUser = add("System", "password1");
     }
 
     public Optional<User> login(String userId, String password) {
@@ -36,7 +40,7 @@ public class UserService {
         return Optional.ofNullable(user);
     }
 
-    public User addUser(String userId, String password) {
+    public User add(String userId, String password) {
         User user = new User(userId, password);
         getUsers().put(userId, user);
         return user;
@@ -58,4 +62,7 @@ public class UserService {
         getActiveUsers().remove(user);
     }
 
+    public User getSystemUser() {
+        return systemUser;
+    }
 }

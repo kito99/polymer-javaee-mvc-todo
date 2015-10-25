@@ -1,8 +1,5 @@
 package virtua.training.polymer.mvc.todo.model;
 
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
-import javax.ws.rs.FormParam;
 import java.io.Serializable;
 
 /**
@@ -14,10 +11,7 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
-    @FormParam("userId")
     private String userId;
-
-    @FormParam("password")
     private String password;
 
     public User() {

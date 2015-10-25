@@ -1,11 +1,11 @@
-package virtua.training.polymer.mvc.todo;
+package virtua.training.polymer.mvc.todo.controller;
 
 import virtua.training.polymer.mvc.todo.model.User;
+import virtua.training.polymer.mvc.todo.service.UserService;
 
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import javax.mvc.MvcContext;
 import javax.mvc.annotation.Controller;
+import javax.mvc.annotation.CsrfValid;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -17,15 +17,15 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
- * Primary controller -- handles all functionality in this simple app.
+ * Handles login/logout duties.
  * <p>
  * Created: 21 Oct 2015
  *
  * @author Kito D. Mann
  */
 @Path("/")
-public class TodoController {
-    private final static Logger logger = Logger.getLogger(TodoController.class.getName());
+public class AuthenticationController {
+    private final static Logger logger = Logger.getLogger(AuthenticationController.class.getName());
 
     @Inject
     private UserService userService;
@@ -33,16 +33,20 @@ public class TodoController {
     @Inject
     private HttpSession session;
 
+    @Inject
+    private User user;
+
     /**
      * Performs a login and adds the user to the session. If the user doesn't exist, an account is automatically created.
      */
     @Path("login")
     @Controller
     @POST
+    @CsrfValid
     // TODO: Add Bean Validation constraints
     public Response login(@FormParam("userId") String userId, @FormParam("password") String password) {
         if (!userService.userExists(userId)) {
-            userService.addUser(userId, password);
+            userService.add(userId, password);
         }
         Optional<User> loginResult = userService.login(userId, password);
         if (loginResult.isPresent()) {
@@ -56,10 +60,11 @@ public class TodoController {
     @Path("logout")
     @Controller
     @GET
-    public String logout(User user) {
-        userService.logout(user);
-        session.removeAttribute("user");
-
+    public String logout() {
+        if (user != null) {
+            userService.logout(user);
+            session.removeAttribute("user");
+        }
         return "/login.jsp";
     }
 }

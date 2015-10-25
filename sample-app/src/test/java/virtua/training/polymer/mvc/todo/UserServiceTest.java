@@ -3,6 +3,7 @@ package virtua.training.polymer.mvc.todo;
 import org.junit.Before;
 import org.junit.Test;
 import virtua.training.polymer.mvc.todo.model.User;
+import virtua.training.polymer.mvc.todo.service.UserService;
 
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class UserServiceTest {
 
     @Test
     public void login_Valid() {
-        User user = service.addUser("foo", "bar");
+        User user = service.add("foo", "bar");
         Optional<User> result = service.login("foo", "bar");
         assertTrue(result.isPresent());
         assertThat(user, equalTo(result.get()));
@@ -37,7 +38,7 @@ public class UserServiceTest {
 
     @Test
     public void login_Invalid() {
-        User user = service.addUser("foo", "bar");
+        User user = service.add("foo", "bar");
         Optional<User> result = service.login("foo", "barbaz");
         assertFalse(result.isPresent());
         assertFalse(service.getActiveUsers().contains(user));
@@ -45,7 +46,7 @@ public class UserServiceTest {
 
     @Test
     public void logout() {
-        User user = service.addUser("foo", "bar");
+        User user = service.add("foo", "bar");
         Optional<User> result = service.login("foo", "bar");
         assertTrue(result.isPresent());
         service.logout(user);
@@ -63,7 +64,7 @@ public class UserServiceTest {
 
     @Test
     public void logout_NeverLoggedIn() {
-        User user = service.addUser("foo", "bar");
+        User user = service.add("foo", "bar");
         service.logout(user);
         assertFalse(service.getActiveUsers().contains(user));
         assertThat(user, equalTo(service.getUsers().get("foo")));
