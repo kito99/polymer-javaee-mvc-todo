@@ -9,8 +9,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-        >
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="utf-8"/>
@@ -101,6 +100,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <span class="flex"></span>
 
                 <!-- Toolbar icons -->
+                <div class="left left-container center horizontal layout">
+                    Hello #{user == null ? '(not logged in)' : user.userId}!
+                </div>
                 <a href="#{mvc.contextPath}#{mvc.applicationPath}/logout">
                     <paper-icon-button icon="settings-power" title="#{bundle['Logout']}"></paper-icon-button>
                 </a>
@@ -114,16 +116,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <div class="bottom bottom-container center horizontal layout">
                     <div class="bottom-title paper-font-subhead">#{bundle['ApplicationSubTitle']}</div>
                 </div>
-
             </paper-toolbar>
 
             <!-- Main Content -->
             <div class="content">
                 <iron-pages attr-for-selected="data-route" selected="{{route}}">
-
                     <section data-route="home">
                         <paper-card heading="Task">
-                            <mvc-tasks endpoint="http://#{mvc.contextPath}${mvc.applicationPath}/tasks"></mvc-tasks>
+                            <mvc-tasks endpoint="#{mvc.contextPath}${mvc.applicationPath}/tasks"
+                                       user-id="#{user.userId}"></mvc-tasks>
                         </paper-card>
                     </section>
 

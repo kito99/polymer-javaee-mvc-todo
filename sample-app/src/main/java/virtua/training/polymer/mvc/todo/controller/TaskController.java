@@ -31,13 +31,14 @@ public class TaskController {
     @Path("{id}")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateTask(@PathParam("id") String id) {
-        Optional<Task> task = taskService.get(id);
-        if (task.isPresent()) {
-            taskService.update(task.get());
+    public Response updateTask(@PathParam("id") String id, Task task) {
+        Optional<Task> currentTask = taskService.get(id);
+        if (currentTask.isPresent()) {
+            taskService.update(task);
+        } else {
+            taskService.add(task);
         }
-        return Response.ok(task).build();
+        return Response.ok().build();
     }
 
     @Path("add")

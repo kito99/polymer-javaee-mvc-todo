@@ -20,13 +20,12 @@
                 color: var(--secondary-text-color);
             }
 
-            #noTasks {
-                visibility: hidden;
+            paper-icon-button:hover, paper-icon-button:hover, iron-icon:hover {
+                color: var(--light-primary-color);
             }
         </style>
 
         <iron-ajax id="ajaxList" auto
-                   url="http://localhost:8080/polymer-javaee-mvc-todo-1.0-SNAPSHOT/resources/tasks/list"
                    handle-as="json" debounce-duration="300"
                    last-response="{{tasks}}"></iron-ajax>
 
@@ -35,23 +34,26 @@
                    on-response="_deleteTaskComplete"
                    debounce-duration="300"></iron-ajax>
 
-        <iron-ajax id="ajaxAdd" method="post"
-                   content-type="application/json" ,
-                   url="http://localhost:8080/polymer-javaee-mvc-todo-1.0-SNAPSHOT/resources/tasks/add"
+        <iron-ajax id="ajaxAdd"
+                   method="post"
+                   content-type="application/json"
                    handle-as="json"
                    on-response="_addTaskComplete"
                    debounce-duration="300"></iron-ajax>
 
-        <iron-ajax id="ajaxUpdate" method="put"
-                   content-type="application/json" ,
+        <iron-ajax id="ajaxUpdate"
+                   method="put"
+                   content-type="application/json"
                    handle-as="json"
                    debounce-duration="300"></iron-ajax>
 
-
-        <paper-button on-click="_newTask"
-        <iron-icon icon="add-box"></iron-icon>
-        Add a Task
-        </paper-button>
+        <div class="layout horizontal end-justified">
+            <paper-button on-click="_newTask">
+                <iron-icon icon="add-box" title="New Task"></iron-icon>
+                Add a Task
+            </paper-button>
+            <paper-icon-button icon="refresh" title="Refresh" on-click="refresh"></paper-icon-button>
+        </div>
 
         <div class="list short" role="list">
             <template id="taskList" is="dom-repeat" items="[[tasks]]">
@@ -82,7 +84,17 @@
 
                     selectedTask: {
                         type: Object
-                    }
+                    },
+
+                    userId: String
+                },
+
+                ready: function () {
+                    this.$.ajaxList.url = this.endpoint + "/list";
+                },
+
+                refresh: function () {
+                    this.$.ajaxList.generateRequest();
                 },
 
                 _selectTask: function (event) {
@@ -91,19 +103,23 @@
                 },
 
                 _newTask: function (event) {
-                    var task = {new: true, name: "", completed: false, userId: 'You'};
+                    var task = {new: true, name: "", completed: false, userId: this.userId};
                     this.splice('tasks', 0, 0, task);
+                    this.selectedTask = task;
                 },
 
                 _saveTask: function (event) {
-                    // This is called before the _selectTask, so we have to grab the value manually.
+                    // This is called before _selectTask, so we have to grab the value manually.
                     var task = this._getTaskFromEvent(event);
                     var ajaxElement;
                     if (task.new) {
+                        console.log("Adding task: " + task.name);
                         ajaxElement = this.$.ajaxAdd;
+                        ajaxElement.url = this.getAddUrl();
                     } else {
+                        console.log("Updating a task: " + task.name);
                         ajaxElement = this.$.ajaxUpdate;
-                        ajaxElement.url = "http://localhost:8080/polymer-javaee-mvc-todo-1.0-SNAPSHOT/resources/tasks/" + task.id;
+                        ajaxElement.url = this.getSelectedTaskUrl(task);
                     }
                     ajaxElement.body = task;
                     ajaxElement.generateRequest();
@@ -112,12 +128,13 @@
                 _addTaskComplete: function (event) {
                     var taskFromServer = this.$.ajaxAdd.lastResponse;
                     this.selectedTask.id = taskFromServer.id;
+                    this.selectedTask.new = false;
                 },
 
                 _deleteTask: function (event) {
                     // This is called before the _selectTask, so we have to grab the value manually.
-                    var task = this.$.taskList.itemForElement(event.target);
-                    this.$.ajaxDelete.url = "http://localhost:8080/polymer-javaee-mvc-todo-1.0-SNAPSHOT/resources/tasks/" + task.id;
+                    var task = this._getTaskFromEvent(event);
+                    this.$.ajaxDelete.url = this.getSelectedTaskUrl(task);
                     this.$.ajaxDelete.generateRequest();
                 },
 
@@ -129,8 +146,19 @@
 
                 _getTaskFromEvent: function (event) {
                     return this.$.taskList.itemForElement(event.target);
-                }
+                },
 
+                _computeListUrl: function (endpoint) {
+                    return endpoint + "/list";
+                },
+
+                getSelectedTaskUrl: function (selectedTask) {
+                    return this.endpoint + "/" + this.selectedTask.id;
+                },
+
+                getAddUrl: function () {
+                    return this.endpoint + "/add";
+                }
             });
         })();
     </script>

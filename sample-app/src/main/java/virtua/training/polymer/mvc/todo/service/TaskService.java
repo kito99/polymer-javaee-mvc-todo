@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * Manages tasks (in memory).
@@ -20,13 +20,13 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @ApplicationScoped
 public class TaskService {
 
-    private ConcurrentLinkedQueue<Task> queue;
+    private ConcurrentLinkedDeque<Task> queue;
 
     @Inject
     protected UserService userService;
 
     public TaskService() {
-        queue = new ConcurrentLinkedQueue<>();
+        queue = new ConcurrentLinkedDeque<>();
     }
 
     @PostConstruct
@@ -43,7 +43,7 @@ public class TaskService {
         if (task.getId() == null) {
             task.setId(UUID.randomUUID().toString());
         }
-        queue.add(task);
+        queue.offerFirst(task);
     }
 
     public void update(Task task) {

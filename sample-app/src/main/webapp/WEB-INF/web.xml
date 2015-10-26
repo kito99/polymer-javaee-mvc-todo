@@ -8,7 +8,7 @@
         <welcome-file>/login.jsp</welcome-file>
     </welcome-file-list>
 
-    <!-- The FacesServlet is only required if you're using Facelets as your View Engine. -->
+    <!-- The following settings are only required if you're using Facelets as your View Engine. -->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -19,5 +19,4 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
-
 </web-app>
