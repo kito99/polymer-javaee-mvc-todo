@@ -2,6 +2,7 @@
 <!--
 @license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+Modifications (c) 2015 Virtua, Inc. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
@@ -75,19 +76,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <!-- Drawer Content -->
             <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
-                <a data-route="home" href="/" on-click="onDataRouteClick">
+                <a data-route="home" href="/home" on-click="onDataRouteClick">
                     <iron-icon icon="home"></iron-icon>
                     <span>Home</span>
                 </a>
 
-                <a data-route="users" href="/users" on-click="onDataRouteClick">
-                    <iron-icon icon="info"></iron-icon>
-                    <span>Users</span>
-                </a>
-
-                <a data-route="contact" href="/contact" on-click="onDataRouteClick">
+                <a data-route="about" href="/about" on-click="onDataRouteClick">
                     <iron-icon icon="mail"></iron-icon>
-                    <span>Contact</span>
+                    <span>About</span>
                 </a>
             </paper-menu>
         </paper-scroll-header-panel>
@@ -131,30 +127,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-card>
                     </section>
 
-                    <section data-route="users">
+                    <section data-route="about">
                         <paper-material elevation="1">
-                            <h2 class="page-title">Users</h2>
+                            <h2 class="page-title">About</h2>
 
-                            <p>This is the users section</p>
-                            <a href="/users/Rob">Rob</a>
-                        </paper-material>
-                    </section>
-
-                    <section data-route="user-info">
-                        <paper-material elevation="1">
-                            <h2 class="page-title">
-                                User:<span>{{params.name}}</span>
-                            </h2>
-
-                            <div>This is <span>{{params.name}}</span>'s section</div>
-                        </paper-material>
-                    </section>
-
-                    <section data-route="contact">
-                        <paper-material elevation="1">
-                            <h2 class="page-title">Contact</h2>
-
-                            <p>This is the contact section</p>
+                            <p>This is a sample application showing how you can use <a
+                                    href="https://www.jcp.org/en/jsr/detail?id=371">Java EE MVC 1.0</a> with
+                                <a href="http://www.polymer-project.org">Poylmer Web Componets</a>. It was built using
+                                the
+                                <a href="https://www.polymer-project.org/1.0/">Polymer Starter Kit</a> and some helpful
+                                guidance from <a href="https://github.com/chkal/todo-mvc">Todo MVC</a> sample app. </p>
+                            You can find the code or this project on <a
+                                href="https://github.com/kito99/polymer-javaee-mvc-todo">Github.</a>
                         </paper-material>
                     </section>
 

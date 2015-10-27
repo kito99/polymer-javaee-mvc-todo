@@ -23,21 +23,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     // Routes
-    page('/', scrollToTop, function() {
+
+    page('/home', scrollToTop, function() {
       app.route = 'home';
     });
 
-    page('/users', scrollToTop, function() {
-      app.route = 'users';
-    });
-
-    page('/users/:name', scrollToTop, function(data) {
-      app.route = 'user-info';
-      app.params = data.params;
-    });
-
-    page('/contact', scrollToTop, function() {
-      app.route = 'contact';
+    page('/about', scrollToTop, function() {
+      app.route = 'about';
     });
 
     // add #! before urls
