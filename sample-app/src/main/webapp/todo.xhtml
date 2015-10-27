@@ -9,9 +9,10 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
+    <base href="${request.requestURI}"/>
     <meta charset="utf-8"/>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -103,9 +104,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <div class="left left-container center horizontal layout">
                     Hello #{user == null ? '(not logged in)' : user.userId}!
                 </div>
-                <a href="#{mvc.contextPath}#{mvc.applicationPath}/logout">
-                    <paper-icon-button icon="settings-power" title="#{bundle['Logout']}"></paper-icon-button>
-                </a>
+
+                <form id="logoutForm" method="post" action="#{mvc.contextPath}#{mvc.applicationPath}/logout">
+                    <paper-icon-button icon="settings-power" title="#{bundle['Logout']}"
+                                       onclick="document.getElementById('logoutForm').submit()"></paper-icon-button>
+                </form>
 
                 <!-- Application name -->
                 <div class="middle middle-container center horizontal layout">

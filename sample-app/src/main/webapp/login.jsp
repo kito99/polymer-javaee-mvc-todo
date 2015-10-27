@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!--
 @license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
@@ -13,10 +14,9 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<fmt:setBundle basename="bundle" var="msgs"/>
+<fmt:setBundle basename="ValidationMessages" var="msgs"/>
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-        >
+<html>
 
 <head>
     <meta charset="utf-8">
@@ -74,7 +74,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </paper-toolbar>
 
             <div class="horizontal center-justified layout login-subtitle">${msgs.resourceBundle['LoginSubTitle']}</div>
-            <!-- Use a standard form instead if <iron-form> because it uses Ajax and doesn't work with redirects -->
+            <div class="horizontal center-justified layout error">${loginError ? msgs.resourcebundle['LoginErrorMessage'] : ''}</div>
+
+            <!-- TODO: We should be using Polymer's error messages instead. -->
+            <c:if test="${not empty messages.errors}">
+                <div class="vertical center layout error" role="alert">
+                    <c:forEach var="error" items="${messages.errors}">
+                        <div>${mvc.encoders.html(error)}</div>
+                    </c:forEach>
+                </div>
+            </c:if>
+
+            <!-- Use a standard form instead of <iron-form> because it uses Ajax and doesn't work with redirects -->
             <form id="loginForm" method="post" action="${mvc.contextPath}${mvc.applicationPath}/login"
                   disable-native-valid>
                 <div class="vertical center layout login-panel">
@@ -83,7 +94,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                  label="User ID:" required></paper-input>
                     <paper-input id="paperPassword" type="password" class="flex"
                                  error-message="${msgs.resourceBundle['InvalidPassword']}"
-                                 label="Password:" pattern="^(?=[^_].*?\d)\w(\w|[!@#$%]){4,20}" required></paper-input>
+                                 label="Password:"
+                                 pattern="^(?=[^_].*?\d)\w(\w|[!@#$%]){4,20}"
+                                 required></paper-input>
                 </div>
                 <div class="horizontal center-justified layout">
                     <paper-button class="login-button" onclick="submitLoginForm(event)">
@@ -91,6 +104,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <iron-icon icon="arrow-forward"></iron-icon>
                     </paper-button>
                 </div>
+
                 <!-- These fields are required because Paper elements aren't sent with a normal form. -->
                 <input name="userId" type="hidden"/>
                 <input name="password" type="hidden"/>

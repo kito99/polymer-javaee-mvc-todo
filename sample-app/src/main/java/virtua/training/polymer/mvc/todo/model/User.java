@@ -1,5 +1,7 @@
 package virtua.training.polymer.mvc.todo.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
@@ -11,7 +13,14 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
+    @NotNull
+    @Pattern(regexp = "^([1-zA-Z0-1@.\\s]{2,10})$",
+            message = "{InvalidUserId}")
     private String userId;
+
+    @NotNull
+    @Pattern(regexp = "^(?=[^_].*?\\d)\\w(\\w|[!@#$%]){4,20}",
+            message = "{InvalidPassword}")
     private String password;
 
     public User() {
