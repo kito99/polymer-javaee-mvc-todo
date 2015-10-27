@@ -74,7 +74,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </paper-toolbar>
 
             <div class="horizontal center-justified layout login-subtitle">${msgs.resourceBundle['LoginSubTitle']}</div>
-            <div class="horizontal center-justified layout error">${loginError ? msgs.resourcebundle['LoginErrorMessage'] : ''}</div>
+            <div class="horizontal center-justified layout error">${loginError ? msgs.resourceBundle['LoginErrorMessage'] : ''}</div>
 
             <!-- TODO: We should be using Polymer's error messages instead. -->
             <c:if test="${not empty messages.errors}">
