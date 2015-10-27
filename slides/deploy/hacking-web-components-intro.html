@@ -1,0 +1,220 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Kito Mann, Virtua, Inc."><title>Hacking Web Components</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.min.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/default.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script type="text/javascript">document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h2>Hacking Web Components</h2><p><small>Kito Mann, Virtua, Inc.</small></p></section><section id="_kito_d_mann_kito99"><h2>Kito D. Mann (@kito99)</h2><div class="ulist"><ul><li class="fragment"><p>Principal Consultant at Virtua (<a href="http://www.virtua.com" class="bare">http://www.virtua.com</a>)</p></li><li class="fragment"><p>Training, consulting, architecture, mentoring</p></li><li class="fragment"><p>Official US PrimeFaces partner</p></li><li class="fragment"><p>Author, JavaServer Faces in Action</p></li><li class="fragment"><p>Founder, JSF Central (<a href="http://www.jsfcentral.com" class="bare">http://www.jsfcentral.com</a>)</p></li></ul></div></section>
+<section id="_kito_d_mann_kito99_2"><h2>Kito D. Mann (@kito99)</h2><div class="ulist"><ul><li class="fragment"><p>Co-host, Enterprise Java Newscast (<a href="http://enterprisejavanews.com" class="bare">http://enterprisejavanews.com</a>)</p></li><li class="fragment"><p>Internationally recognized speaker</p><div class="ulist"><ul><li><p>JavaOne, JavaZone, Devoxx, NFJS, TSSJS, etc.</p></li></ul></div></li><li class="fragment"><p>JCP Member</p><div class="ulist"><ul><li><p>JSF, WebBeans, JSF Portlet Bridge, Portlets</p></li></ul></div></li></ul></div></section>
+<section id="_ui_components_are_everywhere"><h2>UI Components are Everywhere</h2><div class="imageblock" style=""><div class="content"><img src="images/page-with-components.png" alt="page with components"></div></div></section>
+<section id="_ui_components_are_everywhere_2"><h2>UI Components are Everywhere</h2><div class="imageblock" style=""><div class="content"><img src="images/page-with-components-annotated.png" alt="page with components annotated"></div></div></section>
+<section id="_ui_components_are_everywhere_3"><h2>UI Components are Everywhere</h2><div class="ulist"><ul><li class="fragment"><p>Component models have been popular since the early ninenties</p><div class="ulist"><ul><li><p>Visual Basic</p></li><li><p>Delphi</p></li><li><p>PowerBuilder</p></li><li><p>WinForms</p></li><li><p>Windows Presentaiton Framework</p></li><li><p>ASP.NET</p></li><li><p>Swing</p></li><li><p>JavaFX</p></li><li><p>JavaServer Faces</p></li><li><p>Tapestry</p></li></ul></div></li></ul></div></section>
+<section id="_why_do_we_build_components"><h2>Why do We Build Components?</h2><div class="ulist"><ul><li class="fragment"><p>Reusable UI functionality</p><div class="ulist"><ul><li><p>Within a single application</p></li><li><p>Across multiple applications</p></li></ul></div></li><li class="fragment"><p>You can focus on the core application functionality</p></li></ul></div></section>
+<section id="_html_markup_doesn_t_support_non_native_components"><h2>HTML Markup Doesn&#8217;t Support Non-Native Components</h2><div class="imageblock" style=""><div class="content"><img src="images/page-with-components-source.png" alt="page with components source"></div></div></section>
+<section id="_we_work_with_abstractions"><h2>We Work with Abstractions</h2><div class="ulist"><ul><li class="fragment"><p>Programming model may be componentized, but native markup is not</p></li></ul></div></section>
+<section id="_we_work_with_abstractions_2"><h2>We Work with Abstractions</h2><div class="paragraph"><p>PrimeFaces (JavaServer Faces) DataTable</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;p:dataTable var="car" value="#{dtPaginatorView.cars}" rows="10"
+                     paginator="true"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="5,10,15"&gt;
+    &lt;p:column headerText="Id"&gt;
+        &lt;h:outputText value="#{car.id}" /&gt;
+    &lt;/p:column&gt;
+
+    &lt;p:column headerText="Year"&gt;
+        &lt;h:outputText value="#{car.year}" /&gt;
+    &lt;/p:column&gt;
+
+    &lt;p:column headerText="Brand"&gt;
+        &lt;h:outputText value="#{car.brand}" /&gt;
+    &lt;/p:column&gt;
+
+    &lt;p:column headerText="Color"&gt;
+        &lt;h:outputText value="#{car.color}" /&gt;
+    &lt;/p:column&gt;
+&lt;/p:dataTable&gt;</code></pre></div></div></section>
+<section id="_we_work_with_abstractions_3"><h2>We Work with Abstractions</h2><div class="paragraph"><p>Bootstrap Dropdowns</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;div class="dropdown"&gt;
+  &lt;button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"&gt;
+    Dropdown
+    &lt;span class="caret"&gt;&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"&gt;
+    &lt;li role="presentation"&gt;&lt;a role="menuitem" tabindex="-1" href="#"&gt;Action&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a role="menuitem" tabindex="-1" href="#"&gt;Another action&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a role="menuitem" tabindex="-1" href="#"&gt;Something else here&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a role="menuitem" tabindex="-1" href="#"&gt;Separated link&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre></div></div></section>
+<section id="_we_work_with_abstractions_4"><h2>We Work with Abstractions</h2><div class="paragraph"><p>jQuery UI Tabs</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;div id="tabs"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="#tabs-1"&gt;Nunc tincidunt&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#tabs-2"&gt;Proin dolor&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#tabs-3"&gt;Aenean lacinia&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;div id="tabs-1"&gt;
+    ...
+  &lt;/div&gt;
+  &lt;div id="tabs-2"&gt;
+ 	...
+  &lt;/div&gt;
+  &lt;div id="tabs-3"&gt;
+	...
+&lt;/div&gt;</code></pre></div></div></section>
+<section id="_what_is_a_web_component"><h2>What is a Web Component?</h2><div class="ulist"><ul><li class="fragment"><p><em>Web components bring a native component model to HTML</em></p></li></ul></div></section>
+<section id="_what_is_a_web_component_2"><h2>What is a Web Component?</h2><div class="imageblock" style=""><div class="content"><img src="images/polymer-paper-example1.png" alt="polymer paper example1"></div></div></section>
+<section id="_what_is_a_web_component_3"><h2>What is a Web Component?</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;paper-action-dialog backdrop autoCloseDisabled layered="false"&gt;
+  &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.&lt;/p&gt;
+
+  &lt;paper-button affirmative autofocus&gt;Tap me to close&lt;/paper-button&gt;
+&lt;/paper-action-dialog&gt;</code></pre></div></div></section>
+<section id="_web_components_collection_of_html5_standards"><h2>Web Components == Collection of HTML5 Standards</h2><div class="ulist"><ul><li class="fragment"><p>Custom Elements</p></li><li class="fragment"><p>HTML Templates</p></li><li class="fragment"><p>HTML Imports</p></li><li class="fragment"><p>Shadow DOM</p></li></ul></div></section>
+<section id="_custom_elements"><h2>Custom Elements</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;deluxe-counter class="counter" start="10"/&gt;</code></pre></div></div></section>
+<section id="_custom_elements_2"><h2>Custom Elements</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">// Creates an object based on the HTML SimpleCounterPrototype prototype
+var SimpleCounterPrototype = Object.create(HTMLElement.prototype);</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">// Creates an object based on the SimpleCounter prototype
+var DeluxeCounterPrototype = Object.create(window.SimpleCounter.prototype);</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">// Registers &lt;deluxe-counter&gt; in the main document
+window.DeluxeCounter = document.registerElement('deluxe-counter', {
+    prototype: DeluxeCounterPrototype
+});</code></pre></div></div></section>
+<section id="_custom_elements_3"><h2>Custom Elements</h2><aside class="notes"><div class="paragraph"><p>Show counter and inspect element in DOM</p></div></aside>
+<div class="paragraph"><p><a href="http://127.0.0.1:8000//labs/custom-elements/deluxe-counter-demo.html" target="_blank">demo</a></p></div></section>
+<section id="_custom_elements_4"><h2>Custom Elements</h2><div class="imageblock" style=""><div class="content"><img src="images/custom-elements-browser-support.png" alt="custom elements browser support"></div></div></section>
+<section id="_html_templates"><h2>HTML Templates</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;template id="template"&gt;
+    &lt;div id="inner-div"&gt;
+        &lt;div&gt;Inside the template, baby!&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/template&gt;</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">&lt;script&gt;
+    var templateClone = document.importNode(
+        document.querySelector("#template").content, true);
+    var body = document.querySelector("body");
+    body.appendChild(templateClone);
+
+    var templateClone2 = document.importNode(
+        document.querySelector("#template").content, true);
+    body.appendChild(templateClone2);
+&lt;/script&gt;</code></pre></div></div></section>
+<section id="_html_templates_2"><h2>HTML Templates</h2><div class="imageblock" style=""><div class="content"><img src="images/template-simple-output.png" alt="template simple output"></div></div></section>
+<section id="_html_templates_3"><h2>HTML Templates</h2><div class="imageblock" style=""><div class="content"><img src="images/html-templates-browser-support.png" alt="html templates browser support"></div></div></section>
+<section id="_html_imports"><h2>HTML Imports</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;head&gt;
+	...
+	&lt;!-- Bootstrap --&gt;
+	&lt;link href="css/bootstrap.min.css" rel="stylesheet"&gt;
+	&lt;!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --&gt;
+	&lt;!-- WARNING: Respond.js doesn't work if you view the page via file:// --&gt;
+	&lt;!--[if lt IE 9]&gt;
+		&lt;script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"&gt;&lt;/script&gt;
+		&lt;script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"&gt;&lt;/script&gt;
+	&lt;![endif]--&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	...
+	&lt;!-- jQuery (necessary for Bootstrap's JavaScript plugins) --&gt;
+	&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"&gt;&lt;/script&gt;
+	&lt;!-- Include all compiled plugins (below), or include individual files as needed --&gt;
+	&lt;script src="js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;/body&gt;</code></pre></div></div></section>
+<section id="_html_imports_2"><h2>HTML Imports</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;head&gt;
+	...
+	&lt;link rel="import" src="imports/bootstrap.html"/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	...
+&lt;/body&gt;</code></pre></div></div></section>
+<section id="_html_imports_3"><h2>HTML Imports</h2><div class="imageblock" style=""><div class="content"><img src="images/html-imports-browser-support.png" alt="html imports browser support"></div></div></section>
+<section id="_shadow_dom"><h2>Shadow DOM</h2><aside class="notes"><div class="paragraph"><p>Show counter and inspect element in DOM</p></div></aside>
+<div class="paragraph"><p><a href="http://127.0.0.1:8000//labs/putting-it-all-together/deluxe-counter-demo.html" target="_blank">demo</a></p></div></section>
+<section id="_shadow_dom_2"><h2>Shadow DOM</h2><div class="imageblock" style=""><div class="content"><img src="images/shadow-dom-browser-support.png" alt="shadow dom browser support"></div></div></section>
+<section id="_closing_the_browser_gap"><h2>Closing the Browser Gap</h2><aside class="notes"><div class="paragraph"><p>Some features must be enabled with developer dom.webcomponents.enabled preference in about:config
+HTML Imports are supported that way, but may not be in the future (they may use JavaScript 6 modules instead)</p></div></aside>
+<div class="ulist"><ul><li><p>For the latest browser versions:</p><div class="ulist"><ul><li class="fragment"><p>Chrome/Android and Opera support everything</p></li><li class="fragment"><p>Firefox supports everything except for HTML Imports</p></li><li class="fragment"><p>Safari supports only HTML Templates</p></li><li class="fragment"><p>IE doesn&#8217;t support anything</p></li></ul></div></li></ul></div></section>
+<section id="_closing_the_browser_gap_2"><h2>Closing the Browser Gap</h2><div class="paragraph"><p><span class="big">polyfill</span><br>
+ [pol-ee-fil]<br>
+<em>noun</em><br>
+In web development, a polyfill (or polyfiller) is downloadable code which provides facilities that are not built into a web browser. It implements technology that a developer expects the browser to provide natively, providing a more uniform API landscape. For example, many features of HTML5 are not supported by versions of Internet Explorer older than version 8 or 9, but can be used by web pages if those pages install a polyfill. Web shims and HTML5 Shivs are related concepts.</p></div>
+<div class="paragraph"><p>&#8201;&#8212;&#8201;Wikipedia</p></div></section>
+<section id="_closing_the_browser_gap_3"><h2>Closing the Browser Gap</h2><div class="ulist"><ul><li class="fragment"><p>webcomponents.js</p><div class="ulist"><ul><li><p>Polyfill for all specs created by Polymer group at Google</p></li><li><p>webcomponents-lite.js excludes shadow DOM</p></li></ul></div></li></ul></div></section>
+<section id="_closing_the_browser_gap_4"><h2>Closing the Browser Gap</h2><div class="paragraph"><p>webcomponnets.js browser support</p></div>
+<div class="imageblock" style=""><div class="content"><img src="images/polyfill-browser-support.png" alt="polyfill browser support"></div></div></section>
+<section id="_polymer"><h2>Polymer</h2><div class="ulist"><ul><li class="fragment"><p><a href="http://polymer-project.org" class="bare">http://polymer-project.org</a></p></li><li class="fragment"><p>webcomponents.js</p></li><li class="fragment"><p>Polymer library</p><div class="ulist"><ul><li class="fragment"><p>Two-way data binding</p></li><li class="fragment"><p>Declarative event handling</p></li><li class="fragment"><p>Declarative inheritance</p></li><li class="fragment"><p>Property observation</p></li></ul></div></li><li class="fragment"><p>Custom Elements</p></li><li class="fragment"><p>Designer</p></li></ul></div></section>
+<section id="_polymer_2"><h2>Polymer</h2><div class="ulist"><ul><li><p>Currently a "developer preview"</p></li><li><p>Working on a major refactoring geared towards production</p></li></ul></div></section>
+<section id="_polymer_3"><h2>Polymer</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;polymer-element name="name-tag"&gt;
+  &lt;template&gt;
+    This is &lt;b&gt;{{owner}}&lt;/b&gt;'s name-tag element.
+  &lt;/template&gt;
+  &lt;script&gt;
+    Polymer('name-tag', {
+      // initialize the element's model
+      ready: function() {
+        this.owner = 'Rafael';
+      }
+    });
+  &lt;/script&gt;
+&lt;/polymer-element&gt;</code></pre></div></div></section>
+<section id="_web_components_in_the_wild"><h2>Web Components in the Wild</h2><div class="ulist"><ul><li class="fragment"><p>Ploymer Core Elements</p></li><li class="fragment"><p>Polymer Paper Elements</p></li><li class="fragment"><p>Google Web Components</p></li><li class="fragment"><p>Directories</p><div class="ulist"><ul><li><p><a href="http://customelements.io" class="bare">http://customelements.io</a></p></li><li><p><a href="http://component-kitchen.com" class="bare">http://component-kitchen.com</a></p></li></ul></div></li></ul></div></section>
+<section id="_polymer_core_elements"><h2>Polymer Core Elements</h2><div class="paragraph"><p><a href="https://www.polymer-project.org/0.5/components/core-elements/demo.html" target="_blank">demo</a></p></div>
+<div class="paragraph"><p><a href="https://www.polymer-project.org/0.5/docs/elements/core-elements.html#core-ajax" target="_blank">non-visual demo</a></p></div></section>
+<section id="_polymer_paper_elements"><h2>Polymer Paper Elements</h2><div class="ulist"><ul><li class="fragment"><p>Implement Google&#8217;s <a href="http://www.google.com/design/spec/material-design/introduction.html">material design</a></p><div class="ulist"><ul><li><p>Design guidelines that work accross devices</p></li></ul></div></li><li class="fragment"><p><a href="https://www.polymer-project.org/0.5/components/paper-elements/demo.html" target="_blank">demo</a></p></li></ul></div></section>
+<section id="_google_web_components"><h2>Google Web Components</h2><div class="ulist"><ul><li class="fragment"><p>Collection of web components for Google&#8217;s APIs and services</p><div class="ulist"><ul><li><p>YouTube, Maps, Sign in, Calendar, Drive, etc.</p></li></ul></div></li><li class="fragment"><p><a href="http://googlewebcomponents.github.io/" target="_blank">demo</a></p></li></ul></div></section>
+<section id="_customelements_io"><h2>customelements.io</h2><div class="paragraph"><p><a href="http://customelements.io/" target="_blank">demo</a></p></div></section>
+<section id="_playing_with_others"><h2>Playing with Others</h2><div class="ulist"><ul><li class="fragment"><p>AngularJS 2</p></li><li class="fragment"><p><a href="https://gist.github.com/wycats/9144666b0c606d1838be" target="_blank">Ember.js</a></p></li><li class="fragment"><p><a href="http://webcomponents.org/presentations/complementarity-of-react-and-web-components-at-reactjs-conf/" target="_blank">React.js</a></p></li><li class="fragment"><p>JavaServer Faces</p></li><li class="fragment"><p><a href="https://www.parleys.com/talk/vaadin-x-web-components" target="_blank">Vaadin</a></p></li></ul></div></section>
+<section id="_final_thoughts"><h2>Final Thoughts</h2><div class="ulist"><ul><li class="fragment"><p>Visual and non-visual reuse and encapsulation <strong>built into the web platform</strong></p></li><li class="fragment"><p><em>Future</em> of the web</p></li><li class="fragment"><p>Caveats:</p><div class="ulist"><ul><li><p>Reliance on polyfills</p></li><li><p>Modern browsers only</p></li><li><p>Apple and Micosoft&#8230;&#8203;</p></li></ul></div></li></ul></div></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.min.js"></script><script type="text/javascript">// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: false,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, blond, default, moon, night, serif, simple, sky, solarized)
+  theme: Reveal.getQueryHash().theme || 'default',
+  // Transition style (e.g., default, cube, page, concave, zoom, linear, fade, none)
+  transition: Reveal.getQueryHash().transition || 'default',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., default, none, slide, concave, convex, zoom)
+  backgroundTransition: 'default',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>

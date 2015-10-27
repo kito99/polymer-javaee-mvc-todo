@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Kito Mann, Virtua, Inc."><title>Hacking Web Components: Custom Elements</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.min.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/default.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script type="text/javascript">document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h2>Hacking Web Components: Custom Elements</h2><p><small>Kito Mann, Virtua, Inc.</small></p></section><section id="_custom_elements"><h2>Custom Elements</h2><div class="paragraph"><p><a href="http://127.0.0.1:8000/labs/custom-elements//simple-counter-demo.html" target="_blank">demo</a></p></div></section>
+<section id="_custom_elements_2"><h2>Custom Elements</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;simple-counter class="counter" start="10"/&gt;</code></pre></div></div></section>
+<section id="_custom_elements_3"><h2>Custom Elements</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;!-- Importing Web Component's Polyfill --&gt;
+&lt;script src="bower_components/webcomponentsjs/webcomponents.min.js"&gt;&lt;/script&gt;
+
+&lt;!-- Import our custom element --&gt;
+&lt;script src="src/simple-counter.js"&gt;&lt;/script&gt;</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>// Creates an object based on the HTML SimpleCounterPrototype prototype
+var SimpleCounterPrototype = Object.create(HTMLElement.prototype);</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>// Registers &lt;simple-counter&gt; in the main document
+window.SimpleCounter = document.registerElement('simple-counter', {
+    prototype: SimpleCounterPrototype
+});</code></pre></div></div></section>
+<section id="_callbacks"><h2>Callbacks</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">// Fires when an instance of the SimpleCounterPrototype is created
+SimpleCounterPrototype.createdCallback = function() {
+    this.innerText = "Simple Counter";
+}
+// Fires when an instance was inserted into the document
+SimpleCounterPrototype.attachedCallback = function() {
+    this.count = Number(this.getAttribute("start")) || 0;
+    this.start();
+};
+// Fires when an instance was removed from the document
+SimpleCounterPrototype.detachedCallback = function() {
+    this.stop();
+};
+// Fires when an attribute was added, removed, or updated
+SimpleCounterPrototype.attributeChangedCallback = function(attr, oldVal, newVal) {
+    if (attr == "start") {
+        this.count = newVal;
+    }
+}
+
+SimpleCounterPrototype.start = function() {
+    var _self = this;
+    this.timer = setInterval(function() {
+        _self.count = _self.count + 1;
+        _self.update(_self.count);
+    },2000);
+}
+
+SimpleCounterPrototype.stop = function() {
+    clearInterval(this.timer);
+    this.timer = null;
+}
+
+SimpleCounterPrototype.update = function(counterValue) {
+    this.innerHTML = counterValue;
+}</code></pre></div></div></section>
+<section id="_extending_a_custom_element"><h2>Extending a Custom Element</h2><div class="paragraph"><p><a href="http://127.0.0.1:8000/labs/custom-elements//deluxe-counter-demo.html" target="_blank">demo</a></p></div></section>
+<section id="_extending_a_custom_element_2"><h2>Extending a Custom Element</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;deluxe-counter class="counter" start="10"/&gt;</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>// Creates an object based on the SimpleCounter prototype
+var DeluxeCounterPrototype = Object.create(window.SimpleCounter.prototype);</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>// Registers &lt;deluxe-counter&gt; in the main document
+window.DeluxeCounter = document.registerElement('deluxe-counter', {
+    prototype: DeluxeCounterPrototype
+});</code></pre></div></div></section>
+<section id="_extending_a_custom_element_3"><h2>Extending a Custom Element</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>DeluxeCounterPrototype.createdCallback = function() {
+    this.counterDiv = document.createElement('div');
+    this.counterDiv.innerText = "Deluxe Counter";
+    var _self = this;
+    this.counterDiv.onclick = function() {
+        if (_self.timer == null) {
+            _self.start();
+        }
+        else {
+            _self.stop();
+        }
+    }
+    this.appendChild(this.counterDiv);
+}</code></pre></div></div></section>
+<section id="_extending_a_custom_element_4"><h2>Extending a Custom Element</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>DeluxeCounterPrototype.start = function() {
+    window.SimpleCounter.prototype.start.apply(this, arguments);
+    this.counterDiv.className = "";
+}
+
+DeluxeCounterPrototype.stop = function() {
+    window.SimpleCounter.prototype.stop.apply(this, arguments);
+    this.counterDiv.className = "counter-disabled";
+}
+
+DeluxeCounterPrototype.update = function(counterValue) {
+    this.counterDiv.innerText = counterValue;
+}</code></pre></div></div></section>
+<section id="_extending_a_native_element"><h2>Extending a Native Element</h2><div class="paragraph"><p><a href="http://127.0.0.1:8000/labs/custom-elements//reverse-div-demo.html" target="_blank">demo</a></p></div></section>
+<section id="_extending_a_native_element_type_extensions"><h2>Extending a Native Element (type extensions)</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;div is="reverse-div"&gt;
+    Hello world!
+&lt;/div&gt;</code></pre></div></div></section>
+<section id="_extending_a_native_element_type_extensions_2"><h2>Extending a Native Element (type extensions)</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>// Creates an object based on a standard HTML Div prototype
+var ReverseDiv = Object.create(HTMLDivElement.prototype);
+
+ReverseDiv.createdCallback = function() {
+    var text = this.innerText;
+    this.innerText = text.split("").reverse().join("");
+}
+
+window.SimpleCounter = document.registerElement('reverse-div', {
+    prototype: ReverseDiv,
+    extends: 'div'
+});</code></pre></div></div></section>
+<section id="_extending_a_native_element_type_extensions_3"><h2>Extending a Native Element (type extensions)</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>&lt;style&gt;
+    [is="reverse-div"] {
+        color: green;
+        font-size: 60pt;
+        font-family: impact;
+        text-align: center;
+        width: 100%;
+        margin-top:25%;
+        margin-bottom; 50%;
+        display: block;"
+    }
+&lt;/style&gt;</code></pre></div></div></section>
+<section id="_unknown_or_unresolved"><h2>Unknown or Unresolved?</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;youWillBeAssimilated when="now"&gt;
+    I am an HTMLUnkownElement
+&lt;/youWillBeAssimilated&gt;</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">var assimilatedElement = document.querySelector("youWillBeAssimilated");
+var isHTMLUnknownElement = assimilatedElement.__proto__
+    === HTMLUnknownElement.prototype;
+document.write(assimilatedElement.localName + " isHTMLUnknownElement = " +
+    isHTMLUnknownElement + "&lt;br/&gt;");</code></pre></div></div></section>
+<section id="_unknown_or_unresolved_2"><h2>Unknown or Unresolved?</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;you-will-be-assimilated when="now"&gt;
+    I am an HTMLElement
+&lt;/you-will-be-assimilated&gt;</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="javascript language-javascript">var assimilatedDashElement =
+        document.querySelector("you-will-be-assimilated");
+var isHTMLElement =
+        assimilatedElement.__proto__ === HTMLElement.prototype;
+document.write(assimilatedDashElement.localName + " isHTMLElement= " +
+        isHTMLElement + "&lt;br/&gt;");</code></pre></div></div></section>
+<section id="_unknown_or_unresolved_3"><h2>Unknown or Unresolved?</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="css language-css">&lt;style&gt;
+    you-will-be-assimilated:unresolved {
+        opacity: 0;
+    }
+    you-will-be-assimilated {
+        color: blue;
+        opacity: 1;
+        transition: opacity 500ms;
+    }
+&lt;/style&gt;</code></pre></div></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">setTimeout(function() {
+    document.registerElement("you-will-be-assimilated");
+}, 1000);</code></pre></div></div></section>
+<section id="_unknown_or_unresolved_4"><h2>Unknown or Unresolved?</h2><div class="paragraph"><p><a href="http://127.0.0.1:8000/labs/custom-elements//unknown-element-demo.html" target="_blank">demo</a></p></div></section>
+<section id="_lab_custom_elements"><h2>Lab: custom-elements</h2></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.min.js"></script><script type="text/javascript">// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: false,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, blond, default, moon, night, serif, simple, sky, solarized)
+  theme: Reveal.getQueryHash().theme || 'default',
+  // Transition style (e.g., default, cube, page, concave, zoom, linear, fade, none)
+  transition: Reveal.getQueryHash().transition || 'default',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., default, none, slide, concave, convex, zoom)
+  backgroundTransition: 'default',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>
