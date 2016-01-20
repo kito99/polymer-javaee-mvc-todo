@@ -88,22 +88,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <!-- Submit to the controller method that does not user a form bean and does not do validation -->
             <%--<form id="loginForm" method="post" action="${mvc.contextPath}${mvc.applicationPath}/login-no-validation"--%>
-                  <%--disable-native-valid>--%>
+            <%--disable-native-valid>--%>
 
-            <!-- Submit to the controller method that uses a form bean and does validation -->
+            <%--<!-- Submit to the controller method that uses a form bean and does validation -->--%>
             <form id="loginForm" method="post" action="${mvc.contextPath}${mvc.applicationPath}/login-validation"
                   disable-native-valid>
 
                 <div class="vertical center layout login-panel">
 
-                    <!-- No client-side validation -->
-                    <%--<paper-input id="paperUserId" class="flex" label="User ID:"></paper-input>--%>
+                    <!-- No client-side validatßion -->
+                    <%--<paper-input id="paperUserId" class="flex" label="User ID:"--%>
+                                 <%--value="${userId}"></paper-input>--%>
                     <%--<paper-input id="paperPassword" type="password" class="flex" label="Password:"></paper-input>--%>
 
                     <!-- Client-side validation -->
                     <paper-input id="paperUserId" class="flex" error-message="${msgs.resourceBundle['InvalidUserId']}"
                                  pattern="^([1-zA-Z0-1@.\s]{2,10})$"
-                                 label="User ID:" required></paper-input>
+                                 label="User ID:" required value="${userId}">>
+                    </paper-input>
                     <paper-input id="paperPassword" type="password" class="flex"
                                  error-message="${msgs.resourceBundle['InvalidPassword']}"
                                  label="Password:"

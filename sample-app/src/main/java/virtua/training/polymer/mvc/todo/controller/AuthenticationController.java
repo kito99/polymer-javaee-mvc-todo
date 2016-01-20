@@ -11,6 +11,7 @@ import javax.mvc.annotation.CsrfValid;
 import javax.mvc.annotation.RedirectScoped;
 import javax.mvc.annotation.View;
 import javax.mvc.binding.BindingResult;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.executable.ExecutableType;
@@ -38,6 +39,9 @@ public class AuthenticationController implements Serializable {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private HttpServletRequest request;
 
     @Inject
     private HttpSession session;
@@ -68,6 +72,7 @@ public class AuthenticationController implements Serializable {
             // Equivalent to:
             // Response.temporaryRedirect(URI.create("../todo.xhtml")).build();
         }
+        models.put("userId", userId);
         models.put("loginError", true);
         return "/login.jsp";
         // Equivalent to:
@@ -87,7 +92,7 @@ public class AuthenticationController implements Serializable {
 
         if (bindingResult.isFailed()) {
             bindingResult.getAllMessages().stream()
-                    .forEach(message -> messages.addError(message));
+                    .forEach(messages::addError);
         } else {
             Optional<User> loginResult = userService.login(loginForm.getUserId(), loginForm.getPassword());
             if (loginResult.isPresent()) {
@@ -98,6 +103,7 @@ public class AuthenticationController implements Serializable {
                 models.put("loginError", true);
             }
         }
+        models.put("userId", loginForm.getUserId());
         return "/login.jsp";
     }
 
