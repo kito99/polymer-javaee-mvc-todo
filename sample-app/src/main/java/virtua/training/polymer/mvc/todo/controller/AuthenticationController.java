@@ -9,6 +9,7 @@ import javax.mvc.Models;
 import javax.mvc.annotation.Controller;
 import javax.mvc.annotation.CsrfValid;
 import javax.mvc.annotation.RedirectScoped;
+import javax.mvc.annotation.View;
 import javax.mvc.binding.BindingResult;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -30,6 +31,7 @@ import java.util.logging.Logger;
  * @author Kito D. Mann
  */
 @Path("/")
+@Controller
 @RedirectScoped
 public class AuthenticationController implements Serializable {
     private final static Logger logger = Logger.getLogger(AuthenticationController.class.getName());
@@ -56,7 +58,6 @@ public class AuthenticationController implements Serializable {
      * Performs a login using form parameters and adds the user to the session. Performs no validation.
      */
     @Path("login-no-validation")
-    @Controller
     @POST
     @CsrfValid
     public String login(@FormParam("userId") String userId, @FormParam("password") String password) {
@@ -79,7 +80,6 @@ public class AuthenticationController implements Serializable {
      * Uses BindingResults and bean validation.
      */
     @Path("login-validation")
-    @Controller
     @POST
     @CsrfValid
     @ValidateOnExecution(type = ExecutableType.NONE)
@@ -102,7 +102,6 @@ public class AuthenticationController implements Serializable {
     }
 
     @Path("logout")
-    @Controller
     @POST
     public String logout() {
         if (user != null) {
