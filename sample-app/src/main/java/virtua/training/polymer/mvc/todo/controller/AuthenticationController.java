@@ -11,6 +11,10 @@ import javax.mvc.annotation.CsrfValid;
 import javax.mvc.annotation.RedirectScoped;
 import javax.mvc.binding.BindingResult;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import javax.validation.executable.ExecutableType;
+import javax.validation.executable.ValidateOnExecution;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -49,22 +53,51 @@ public class AuthenticationController implements Serializable {
     Messages messages;
 
     /**
-     * Performs a login and adds the user to the session. If the user doesn't exist, an account is automatically created.
+     * Performs a login using form parameters and adds the user to the session. Performs no validation.
      */
-    @Path("login")
+    @Path("login-no-validation")
     @Controller
     @POST
     @CsrfValid
     public String login(@FormParam("userId") String userId, @FormParam("password") String password) {
-        if (!userService.userExists(userId)) {
-            userService.add(userId, password);
-        }
         Optional<User> loginResult = userService.login(userId, password);
         if (loginResult.isPresent()) {
             session.setAttribute("user", loginResult.get());
             return "redirect:../todo.xhtml";
+            // Equivalent to:
+            // Response.temporaryRedirect(URI.create("../todo.xhtml")).build();
         }
         models.put("loginError", true);
+        return "/login.jsp";
+        // Equivalent to:
+        // Viewable view = new Viewable("../login.jsp");
+        //Response.temporaryRedirect(URI.create("../login.jsp")).build();
+    }
+
+    /**
+     * Performs a login using form parameters and adds the user to the session.
+     * Uses BindingResults and bean validation.
+     */
+    @Path("login-validation")
+    @Controller
+    @POST
+    @CsrfValid
+    @ValidateOnExecution(type = ExecutableType.NONE)
+    public String login(@BeanParam @Valid LoginForm loginForm) {
+
+        if (bindingResult.isFailed()) {
+            bindingResult.getAllMessages().stream()
+                    .forEach(message -> messages.addError(message));
+        } else {
+            Optional<User> loginResult = userService.login(loginForm.getUserId(), loginForm.getPassword());
+            if (loginResult.isPresent()) {
+                session.setAttribute("user", loginResult.get());
+                return "redirect:../todo.xhtml";
+
+            } else {
+                models.put("loginError", true);
+            }
+        }
         return "/login.jsp";
     }
 
@@ -78,34 +111,5 @@ public class AuthenticationController implements Serializable {
         }
         return "/login.jsp";
     }
-
-//    @Path("login")
-//    @Controller
-//    @POST
-//    @CsrfValid
-//    @ValidateOnExecution(type = ExecutableType.NONE)
-//    public String login(@BeanParam @Valid User user) {
-//
-//        if (bindingResult.isFailed()) {
-//            bindingResult.getAllMessages().stream()
-//                    .forEach(message -> messages.addError(message));
-//        } else {
-//            if (!userService.userExists(user.getUserId())) {
-//                userService.add(user.getUserId(), user.getPassword());
-//            }
-//            Optional<User> loginResult = userService.login(user.getUserId(), user.getPassword());
-//            if (loginResult.isPresent()) {
-//                session.setAttribute("user", loginResult.get());
-//                return "redirect:../todo.xhtml";
-//                //Response.temporaryRedirect(URI.create("../todo.xhtml")).build();
-//            } else {
-//                models.put("loginError", true);
-//            }
-//        }
-//        return "/login.jsp";
-//        //Viewable view = new Viewable("../login.jsp");
-//        //Response.temporaryRedirect(URI.create("../login.jsp")).build();
-//    }
-
 
 }

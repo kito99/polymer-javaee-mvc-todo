@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Simple service for managing users and active users (in memory).
- *
+ * <p>
  * Created: 22 Oct 2015
  *
  * @author Kito D. Mann
@@ -29,9 +29,14 @@ public class UserService {
         systemUser = add("System", "password1");
     }
 
+    /**
+     * Logs a user in and adds them to the active user list. If the user doesn't exist, creates the user.
+     */
     public Optional<User> login(String userId, String password) {
         User user = getUsers().get(userId);
-        if (user != null && user.getPassword().equals(password)) {
+        if (user == null) {
+            user = add(userId, password);
+        } else if (user.getPassword().equals(password)) {
             getActiveUsers().add(user);
             getUsers().put(userId, user);
         } else {
@@ -50,6 +55,7 @@ public class UserService {
         return activeUsers;
 
     }
+
     public boolean userExists(String userId) {
         return getUsers().containsKey(userId);
     }

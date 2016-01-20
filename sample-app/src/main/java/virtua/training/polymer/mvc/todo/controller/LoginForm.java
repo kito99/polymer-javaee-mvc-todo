@@ -1,29 +1,27 @@
-package virtua.training.polymer.mvc.todo.model;
+package virtua.training.polymer.mvc.todo.controller;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.io.Serializable;
+import javax.ws.rs.FormParam;
 
 /**
- * Represents a user.
- *
- * Created: 22 Oct 2015
+ * Collects login parameters.
  *
  * @author Kito D. Mann
  */
-public class User implements Serializable {
+public class LoginForm {
 
+    @NotNull
+    @Pattern(regexp = "^([1-zA-Z0-1@.\\s]{2,10})$",
+            message = "{InvalidUserId}")
+    @FormParam("userId")
     private String userId;
 
+    @NotNull
+    @Pattern(regexp = "^(?=[^_].*?\\d)\\w(\\w|[!@#$%]){4,20}",
+            message = "{InvalidPassword}")
+    @FormParam("password")
     private String password;
-
-    public User() {
-    }
-
-    public User(String userId, String password) {
-        this.userId = userId;
-        this.password = password;
-    }
 
     public String getUserId() {
         return userId;
