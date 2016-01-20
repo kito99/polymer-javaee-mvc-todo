@@ -5,6 +5,8 @@ import virtua.training.polymer.mvc.todo.model.User;
 import virtua.training.polymer.mvc.todo.service.TaskService;
 
 import javax.inject.Inject;
+import javax.mvc.annotation.Controller;
+import javax.mvc.annotation.View;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -74,5 +76,16 @@ public class TaskController {
     public Response getTasks() {
         Task[] tasks = taskService.getTasks();
         return Response.ok(tasks).build();
+    }
+
+    /**
+     * Example of using a controller method in the same class with JAX-RS resource methods, and the @View annotation.
+     */
+    @Controller
+    @Path("listPage")
+    @GET
+    @View("redirect:../todo.xhtml#!/home/")
+    public void getTaskPage() {
+        // do some work
     }
 }
