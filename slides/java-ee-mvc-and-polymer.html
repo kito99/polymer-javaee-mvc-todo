@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Kito Mann (@kito99), Virtua, Inc."><title>Modern Web Apps with HTML5 Web Components, Polymer, and Java EE MVC 1.0</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.min.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/default.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script type="text/javascript">document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h2>Modern Web Apps with HTML5 Web Components, Polymer, and Java EE MVC 1.0</h2><p><small>Kito Mann (@kito99), Virtua, Inc.</small></p></section><section id="_kito_d_mann_kito99"><h2>Kito D. Mann (@kito99)</h2><div class="ulist"><ul><li class="fragment"><p>Principal Consultant at Virtua (<a href="http://www.virtua.com" class="bare">http://www.virtua.com</a>)</p></li><li class="fragment"><p>Training, consulting, architecture, mentoring</p><div class="ulist"><ul><li><p>PrimeFaces, JSF, Java EE, Web Components, Polymer, Liferay, etc.</p></li></ul></div></li><li class="fragment"><p>Official US PrimeFaces partner</p></li><li class="fragment"><p>Author, JavaServer Faces in Action</p></li><li class="fragment"><p>Founder, JSF Central (<a href="http://www.jsfcentral.com" class="bare">http://www.jsfcentral.com</a>)</p></li></ul></div></section>
+<section id="_kito_d_mann_kito99_2"><h2>Kito D. Mann (@kito99)</h2><div class="ulist"><ul><li class="fragment"><p>Co-host, Enterprise Java Newscast (<a href="http://enterprisejavanews.com" class="bare">http://enterprisejavanews.com</a>)</p></li><li class="fragment"><p>New site: <a href="http://knowesis.io" class="bare">http://knowesis.io</a></p></li><li class="fragment"><p>Internationally recognized speaker</p><div class="ulist"><ul><li><p>JavaOne, JavaZone, Devoxx, Devnexus, NFJS, etc.</p></li></ul></div></li><li class="fragment"><p>JCP Member</p><div class="ulist"><ul><li><p>JSF, MVC, JSF Portlet Bridge, Portlets</p></li></ul></div></li></ul></div></section>
+<section id="_mvc"><h2>MVC</h2><div class="ulist"><ul><li class="fragment"><p>New <a href="https://www.jcp.org/en/jsr/detail?id=371" target="_blank">JSR (371)</a> for Java EE 8</p></li><li class="fragment"><p>Action-based server-side framework like Spring MVC</p></li><li class="fragment"><p>Based on community feedback</p></li><li class="fragment"><p>Current release: EDR2</p></li><li class="fragment"><p>Java EE 8 scheduled for first half of 2017</p></li></ul></div></section>
+<section id="_mvc_and_jsf"><h2>MVC and JSF?</h2><div class="ulist"><ul><li class="fragment"><p>MVC will sit alongside with JSF in Java EE (<em>not</em> a replacement)</p></li></ul></div></section>
+<section id="_mvc_and_jsf_2"><h2>MVC and JSF?</h2><div class="imageblock" style=""><div class="content"><img src="images/jsf-component-framework.png" alt="Component Frameworks" width="859" height="392"></div><div class="title">Component-based frameworks (image from Ed Burns: <a href="http://www.oracle.com/technetwork/articles/java/mvc-2280472.html" target="_blank">Why Another MVC?</a>)</div></div></section>
+<section id="_mvc_and_jsf_3"><h2>MVC and JSF?</h2><div class="imageblock" style=""><div class="content"><img src="images/jsf-action-framework.png" alt="Action Frameworks" width="859" height="392"></div><div class="title">Action-based frameworks (image from Ed Burns: <a href="http://www.oracle.com/technetwork/articles/java/mvc-2280472.html" target="_blank">Why Another MVC?</a>)</div></div></section>
+<section id="_mvc_2"><h2>MVC</h2><div class="ulist"><ul><li class="fragment"><p>Built on top of JAX-RS</p></li><li class="fragment"><p>Controllers must use CDI</p></li><li class="fragment"><p>Controllers can be in request scope</p></li><li class="fragment"><p>Allows you to handle errors inside of Controllers instead of globally like JAX-RS</p></li></ul></div></section>
+<section id="_mvc_3"><h2>MVC</h2><div class="ulist"><ul><li class="fragment"><p>Bring your own template engine!</p></li><li class="fragment"><p>Built-in support for CSRF protection</p></li><li class="fragment"><p>Support for encoding to avoid XSS attacks</p></li></ul></div></section>
+<section id="_what_about_ui_components"><h2>What about UI Components?</h2></section>
+<section id="_ui_components_are_everywhere"><h2>UI Components are Everywhere</h2><div class="imageblock" style=""><div class="content"><img src="images/page-with-components.png" alt="page with components"></div></div></section>
+<section id="_ui_components_are_everywhere_2"><h2>UI Components are Everywhere</h2><div class="imageblock" style=""><div class="content"><img src="images/page-with-components-annotated.png" alt="page with components annotated"></div></div></section>
+<section id="_ui_components_are_everywhere_3"><h2>UI Components are Everywhere</h2><div class="ulist"><ul><li class="fragment"><p>Component models have been popular since the early ninenties</p><div class="ulist"><ul><li><p>Visual Basic</p></li><li><p>Delphi</p></li><li><p>PowerBuilder</p></li><li><p>WinForms</p></li><li><p>Windows Presentaiton Framework</p></li><li><p>ASP.NET</p></li><li><p>Swing</p></li><li><p>JavaFX</p></li><li><p>JavaServer Faces</p></li><li><p>Tapestry</p></li></ul></div></li></ul></div></section>
+<section id="_ui_components_are_everywhere_4"><h2>UI Components are Everywhere</h2><div class="ulist"><ul><li class="fragment"><p>In the browser, component suites must invent their own models:</p><div class="ulist"><ul><li><p>YUI</p></li><li><p>KendoUI</p></li><li><p>Bootstrap</p></li><li><p>jQuery UI</p></li><li><p>Wijmo</p></li><li><p>PrimeUI</p></li><li><p>Infragistics</p></li></ul></div></li></ul></div></section>
+<section id="_why_do_we_build_components"><h2>Why do We Build Components?</h2><div class="ulist"><ul><li class="fragment"><p>Reusable UI functionality</p><div class="ulist"><ul><li><p>Within a single application</p></li><li><p>Across multiple applications</p></li></ul></div></li><li class="fragment"><p>You can focus on the core application functionality</p></li></ul></div></section>
+<section id="_html_markup_doesn_t_support_non_native_components"><h2>HTML Markup Doesn&#8217;t Support Non-Native Components</h2><div class="imageblock" style=""><div class="content"><img src="images/page-with-components-source.png" alt="page with components source"></div></div></section>
+<section id="_we_work_with_abstractions"><h2>We Work with Abstractions</h2><div class="ulist"><ul><li class="fragment"><p>Programming model may be componentized, but native markup is not</p></li></ul></div></section>
+<section id="_we_work_with_abstractions_2"><h2>We Work with Abstractions</h2><div class="paragraph"><p>PrimeFaces (JavaServer Faces) DataTable</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;p:dataTable var="car" value="#{dtPaginatorView.cars}" rows="10"
+                     paginator="true"
+                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="5,10,15"&gt;
+    &lt;p:column headerText="Id"&gt;
+        &lt;h:outputText value="#{car.id}" /&gt;
+    &lt;/p:column&gt;
+
+    &lt;p:column headerText="Year"&gt;
+        &lt;h:outputText value="#{car.year}" /&gt;
+    &lt;/p:column&gt;
+
+    &lt;p:column headerText="Brand"&gt;
+        &lt;h:outputText value="#{car.brand}" /&gt;
+    &lt;/p:column&gt;
+
+    &lt;p:column headerText="Color"&gt;
+        &lt;h:outputText value="#{car.color}" /&gt;
+    &lt;/p:column&gt;
+&lt;/p:dataTable&gt;</code></pre></div></div></section>
+<section id="_we_work_with_abstractions_3"><h2>We Work with Abstractions</h2><div class="paragraph"><p>Bootstrap Dropdowns</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;div class="dropdown"&gt;
+  &lt;button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true"&gt;
+    Dropdown
+    &lt;span class="caret"&gt;&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1"&gt;
+    &lt;li role="presentation"&gt;&lt;a role="menuitem" tabindex="-1" href="#"&gt;Action&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a role="menuitem" tabindex="-1" href="#"&gt;Another action&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a role="menuitem" tabindex="-1" href="#"&gt;Something else here&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a role="menuitem" tabindex="-1" href="#"&gt;Separated link&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre></div></div></section>
+<section id="_we_work_with_abstractions_4"><h2>We Work with Abstractions</h2><div class="paragraph"><p>jQuery UI Tabs</p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;div id="tabs"&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href="#tabs-1"&gt;Nunc tincidunt&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#tabs-2"&gt;Proin dolor&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="#tabs-3"&gt;Aenean lacinia&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;div id="tabs-1"&gt;
+    ...
+  &lt;/div&gt;
+  &lt;div id="tabs-2"&gt;
+ 	...
+  &lt;/div&gt;
+  &lt;div id="tabs-3"&gt;
+	...
+&lt;/div&gt;</code></pre></div></div></section>
+<section id="_what_is_a_web_component"><h2>What is a Web Component?</h2><div class="ulist"><ul><li class="fragment"><p><em>Web components bring a native component model to HTML</em></p></li></ul></div></section>
+<section id="_what_is_a_web_component_2"><h2>What is a Web Component?</h2><div class="imageblock" style=""><div class="content"><img src="images/polymer-paper-example1.png" alt="polymer paper example1"></div></div></section>
+<section id="_what_is_a_web_component_3"><h2>What is a Web Component?</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;paper-action-dialog backdrop autoCloseDisabled layered="false"&gt;
+  &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.&lt;/p&gt;
+
+  &lt;paper-button affirmative autofocus&gt;Tap me to close&lt;/paper-button&gt;
+&lt;/paper-action-dialog&gt;</code></pre></div></div></section>
+<section id="_web_components_collection_of_html5_standards"><h2>Web Components == Collection of HTML5 Standards</h2><div class="ulist"><ul><li class="fragment"><p>Custom Elements</p></li><li class="fragment"><p>HTML Templates</p></li><li class="fragment"><p>HTML Imports</p></li><li class="fragment"><p>Shadow DOM</p><div class="ulist"><ul><li><p>(Custom CSS Properties)</p></li></ul></div></li></ul></div></section>
+<section id="_custom_elements"><h2>Custom Elements</h2><aside class="notes"><div class="paragraph"><p>Show counter and source and inspect element in DOM</p></div></aside>
+<div class="paragraph"><p><a href="http://127.0.0.1:8000//deluxe-counter-demo.html" target="_blank">demo</a></p></div></section>
+<section id="_web_components_in_the_wild"><h2>Web Components in the Wild</h2><div class="ulist"><ul><li class="fragment"><p>Web Components Toolkits</p><div class="ulist"><ul><li><p><a href="https://www.polymer-project.org" target="_blank">Polymer</a></p></li><li><p><a href="http://x-tag.github.io/" target="_blank">X-Tag</a></p></li></ul></div></li><li class="fragment"><p>Component Suites</p><div class="ulist"><ul><li><p><a href="https://elements.polymer-project.org/" target="_blank">Polymer Element Catalog</a></p></li><li><p><a href="http://bosonic.github.io/Bosonic" target="_blank">Bosonic</a></p></li><li><p><a href="http://www.primefaces.org/primeui/#primeelements" target="_blank">Prime Elements</a></p></li><li><p><a href="https://mediamath.github.io/strand/" target="_blank">Strand Web Components</a></p></li></ul></div></li></ul></div></section>
+<section id="_web_components_in_the_wild_2"><h2>Web Components in the Wild</h2><div class="ulist"><ul><li class="fragment"><p>Directories</p><div class="ulist"><ul><li><p><a href="http://customelements.io" class="bare">http://customelements.io</a></p></li><li><p><a href="http://component.kitchen" class="bare">http://component.kitchen</a></p></li></ul></div></li></ul></div></section>
+<section id="_what_is_poylmer"><h2>What is Poylmer?</h2><div class="imageblock" style=""><div class="content"><img src="images/webcomponents-stack.svg" alt="webcomponents stack"></div></div></section>
+<section id="_polymer"><h2>Polymer</h2><div class="ulist"><ul><li class="fragment"><p>Library for building web components</p></li><li class="fragment"><p>Extensive feature set</p><div class="ulist"><ul><li><p>Simplified programming model</p></li><li><p>Two-way data binding</p></li><li><p>Declarative event handling</p></li><li><p>Behaviors (mixins)</p></li><li><p>Property observation</p></li></ul></div></li><li class="fragment"><p>Also hosts extensive sets of web components</p></li><li class="fragment"><p>Extensive set of tools</p><div class="ulist"><ul><li><p>Build, testing, designer, etc.</p></li></ul></div></li></ul></div></section>
+<section id="_polymer_2"><h2>Polymer</h2><div class="ulist"><ul><li class="fragment"><p>Developed by and used internally by Google</p></li><li class="fragment"><p>Over 300 Google Projects (including <a href="http://gaming.youtube.com" class="bare">http://gaming.youtube.com</a>)</p></li><li class="fragment"><p>Over 150,000 public facing "web pages"</p></li><li class="fragment"><p>Used internally for parts of Chrome</p></li><li class="fragment"><p>Heavily promoted (<a href="https://www.polymer-project.org/summit" target="_blank">Polymer Summit</a>, <a href="https://www.youtube.com/playlist?list=PLOU2XLYxmsII5c3Mgw6fNYCzaWrsM3sMN" target="_blank">Polycasts</a>, etc.)</p></li></ul></div></section>
+<section id="_polymer_3"><h2>Polymer</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;dom-module id="seed-element"&gt;
+
+  &lt;template&gt;
+    &lt;style&gt;
+      :host {
+        display: block;
+        box-sizing: border-box;
+      }
+    &lt;/style&gt;
+    &lt;content&gt;&lt;/content&gt;
+    &lt;p class="author"&gt;
+      &lt;img src="{{author.image}}"&gt;
+      Cheers, {{author.name}}!
+    &lt;/p&gt;
+  &lt;/template&gt;
+
+&lt;/dom-module&gt;
+
+&lt;script&gt;
+
+  Polymer({
+
+    is: 'seed-element',
+
+    properties: {
+      fancy: Boolean,
+
+      author: {
+        type: Object,
+        value: function() {
+          return {
+            name:  'Dimitri Glazkov',
+            image: 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg',
+          };
+        }
+      },
+
+    },
+
+    // Element Lifecycle
+
+    ready: function() {
+      // `ready` is called after all elements have been configured, but
+      // propagates bottom-up. This element's children are ready, but parents
+      // are not.
+    },
+
+    attached: function() {
+      // `attached` fires once the element and its parents have been inserted
+      // into a document.
+    },
+
+    detached: function() {
+      // The analog to `attached`, `detached` fires when the element has been
+      // removed from a document.
+    },
+
+    // Element Behavior
+
+    sayHello: function(greeting) {
+      var response = greeting || 'Hello World!';
+      return 'seed-element says, ' + response;
+    }
+
+  });
+
+&lt;/script&gt;</code></pre></div></div></section>
+<section id="_polymer_element_catalog"><h2>Polymer Element Catalog</h2><div class="imageblock" style=""><div class="content"><img src="images/polymer-element-sets.png" alt="polymer element sets"></div></div></section>
+<section id="_polymer_element_catalog_2"><h2>Polymer Element Catalog</h2><div class="paragraph"><p><a href="https://elements.polymer-project.org/" target="_blank">demo</a></p></div>
+<aside class="notes"><div class="paragraph"><p>Show polymer starter kit too</p></div></aside></section>
+<section id="_sample_application_polymer_with_java_ee_mvc"><h2>Sample Application: Polymer with Java EE MVC</h2><div class="paragraph"><p>demo
+<a href="https://github.com/kito99/polymer-javaee-mvc-todo" target="_blank">(github)</a></p></div></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.min.js"></script><script type="text/javascript">// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: true,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, blond, default, moon, night, serif, simple, sky, solarized)
+  theme: Reveal.getQueryHash().theme || 'default',
+  // Transition style (e.g., default, cube, page, concave, zoom, linear, fade, none)
+  transition: Reveal.getQueryHash().transition || 'default',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., default, none, slide, concave, convex, zoom)
+  backgroundTransition: 'default',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>

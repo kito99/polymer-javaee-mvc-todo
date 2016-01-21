@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+    http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+    <!-- This file is only here to easily expose a resource bundle to Facelets. Not required for other View Engines. -->
+    <application>
+        <resource-bundle>
+            <base-name>ValidationMessages</base-name>
+            <var>bundle</var>
+        </resource-bundle>
+    </application>
+  
+</faces-config>

@@ -1,0 +1,166 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="mvc-tasks">
+    <template>
+        <style include="shared-styles"></style>
+
+        <style>
+            .task paper-material {
+                width: 100%;
+                padding: 10px;
+            }
+
+            .task paper-input, .user-name {
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+
+            .user-name {
+                color: var(--secondary-text-color);
+            }
+
+            paper-icon-button:hover, paper-icon-button:hover, iron-icon:hover {
+                color: var(--light-primary-color);
+            }
+        </style>
+
+        <iron-ajax id="ajaxList" auto
+                   handle-as="json" debounce-duration="300"
+                   last-response="{{tasks}}"></iron-ajax>
+
+        <iron-ajax id="ajaxDelete"
+                   method="delete"
+                   on-response="_deleteTaskComplete"
+                   debounce-duration="300"></iron-ajax>
+
+        <iron-ajax id="ajaxAdd"
+                   method="post"
+                   content-type="application/json"
+                   handle-as="json"
+                   on-response="_addTaskComplete"
+                   debounce-duration="300"></iron-ajax>
+
+        <iron-ajax id="ajaxUpdate"
+                   method="put"
+                   content-type="application/json"
+                   handle-as="json"
+                   debounce-duration="300"></iron-ajax>
+
+        <div class="layout horizontal end-justified">
+            <paper-button on-click="_newTask">
+                <iron-icon icon="add-box" title="New Task"></iron-icon>
+                Add a Task
+            </paper-button>
+            <paper-icon-button icon="refresh" title="Refresh" on-click="refresh"></paper-icon-button>
+        </div>
+
+        <div class="list short" role="list">
+            <template id="taskList" is="dom-repeat" items="[[tasks]]">
+                <paper-item class="task" role="menuitemcheckbox" on-click="_selectTask">
+                    <paper-material class="layout horizontal end">
+                        <paper-checkbox id="taskCompleted" checked="{{item.completed}}"></paper-checkbox>
+                        <span class="user-name">User: <span>[[item.userId]]</span></span>
+                        <paper-input id="taskName" class="flex" label="Task" value="{{item.name}}"></paper-input>
+                        <paper-icon-button id="taskSave" icon="save" on-click="_saveTask"></paper-icon-button>
+                        <paper-icon-button id="taskDelete" icon="delete" on-click="_deleteTask"></paper-icon-button>
+                    </paper-material>
+                </paper-item>
+            </template>
+        </div>
+    </template>
+
+    <script>
+        (function () {
+            'use strict';
+
+            Polymer({
+                is: 'mvc-tasks',
+
+                properties: {
+                    endpoint: {
+                        type: String
+                    },
+
+                    selectedTask: {
+                        type: Object
+                    },
+
+                    userId: String
+                },
+
+                ready: function () {
+                    this.$.ajaxList.url = this.endpoint + "/list";
+                },
+
+                refresh: function () {
+                    this.$.ajaxList.generateRequest();
+                },
+
+                _selectTask: function (event) {
+                    this.selectedTask = this.$.taskList.itemForElement(event.target);
+                    console.log("Selected task: " + this.selectedTask.name);
+                },
+
+                _newTask: function (event) {
+                    var task = {new: true, name: "", completed: false, userId: this.userId};
+                    this.splice('tasks', 0, 0, task);
+                    this.selectedTask = task;
+                },
+
+                _saveTask: function (event) {
+                    // This is called before _selectTask, so we have to grab the value manually.
+                    var task = this._getTaskFromEvent(event);
+                    var ajaxElement;
+                    if (task.new) {
+                        console.log("Adding task: " + task.name);
+                        ajaxElement = this.$.ajaxAdd;
+                        ajaxElement.url = this.getAddUrl();
+                    } else {
+                        console.log("Updating a task: " + task.name);
+                        ajaxElement = this.$.ajaxUpdate;
+                        ajaxElement.url = this.getSelectedTaskUrl(task);
+                    }
+                    ajaxElement.body = task;
+                    ajaxElement.generateRequest();
+                },
+
+                _addTaskComplete: function (event) {
+                    var taskFromServer = this.$.ajaxAdd.lastResponse;
+                    this.selectedTask.id = taskFromServer.id;
+                    this.selectedTask.new = false;
+                },
+
+                _deleteTask: function (event) {
+                    // This is called before the _selectTask, so we have to grab the value manually.
+                    var task = this._getTaskFromEvent(event);
+                    this.$.ajaxDelete.url = this.getSelectedTaskUrl(task);
+                    this.$.ajaxDelete.generateRequest();
+                },
+
+                _deleteTaskComplete: function (event) {
+                    var items = this.$.taskList.items;
+                    var index = items.indexOf(this.selectedTask);
+                    this.splice('tasks', index, 1);
+                },
+
+                _getTaskFromEvent: function (event) {
+                    return this.$.taskList.itemForElement(event.target);
+                },
+
+                _computeListUrl: function (endpoint) {
+                    return endpoint + "/list";
+                },
+
+                getSelectedTaskUrl: function (selectedTask) {
+                    return this.endpoint + "/" + this.selectedTask.id;
+                },
+
+                getAddUrl: function () {
+                    return this.endpoint + "/add";
+                }
+            });
+        })();
+    </script>
+
+</dom-module>
