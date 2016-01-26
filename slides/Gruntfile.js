@@ -3,7 +3,8 @@ module.exports = function(grunt) {
     grunt.initConfig({
 		exec: {
 		  readme: 'asciidoctor "README.asc"',            
-		  session: 'asciidoctor -T asciidoctor-reveal.js/templates/slim "java-ee-mvc-and-polymer.asc"'
+		  session: 'asciidoctor -T asciidoctor-reveal.js/templates/slim "java-ee-mvc-and-polymer.asc"',
+            pdf: 'asciidoctor-pdf *.asc'		  
 		},
         'connect': {
             demo: {
@@ -23,7 +24,8 @@ module.exports = function(grunt) {
     
 	grunt.registerTask('build-readme', ['exec:readme']);	
 	grunt.registerTask('build-session', ['exec:session']);	
+	grunt.registerTask('build-pdf', ['exec:pdf']);		
         
-	grunt.registerTask('default', ['build-readme', 'build-session']);	
+	grunt.registerTask('default', ['build-readme', 'build-session', 'build-pdf']);	
     
 };
