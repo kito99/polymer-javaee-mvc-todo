@@ -10,9 +10,15 @@
 hs_err_pid*
 
 # IntelliJ project files
+/slides/java-ee-mvc-and-polymer.html
 .idea
 *.iml
 
+/slides/java-ee-mvc-and-polymer.pdf
+/slides/java-ee-mvc-and-polymer.pdfmarks
+/slides/README.pdf
+/slides/README.pdfmarks
+/README.html
 build
 out
 deploy
