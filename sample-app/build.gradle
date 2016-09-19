@@ -18,12 +18,15 @@ repositories {
     maven {
         url "https://maven.java.net/content/groups/public/"
     }
+    maven {
+        url "http://dl.bintray.com/mvc-spec/maven"
+    }
 }
 
 dependencies {
 
     compile("javax.mvc:javax.mvc-api:1.0-SNAPSHOT",
-            "org.glassfish.ozark:ozark:1.0.0-m03-SNAPSHOT")
+            "org.glassfish.ozark:ozark:20160715")
 
     providedCompile("javax:javaee-api:7.0")
 
