@@ -84,7 +84,7 @@ public class TaskController {
     @Controller
     @Path("listPage")
     @GET
-    @View("redirect:../todo.xhtml#!/home/")
+    @View("redirect:../facelets/todo.html#!/home/")
     public void getTaskPage() {
         // do some work
     }

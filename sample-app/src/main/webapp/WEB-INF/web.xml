@@ -17,6 +17,11 @@
 
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>*.xhtml</url-pattern>
+        <url-pattern>/facelets/*</url-pattern>
     </servlet-mapping>
+    
+    <context-param>
+        <param-name>javax.faces.FACELETS_VIEW_MAPPINGS</param-name>
+        <param-value>*.html</param-value>
+    </context-param>
 </web-app>

@@ -68,9 +68,9 @@ public class AuthenticationController implements Serializable {
         Optional<User> loginResult = userService.login(userId, password);
         if (loginResult.isPresent()) {
             session.setAttribute("user", loginResult.get());
-            return "redirect:../todo.xhtml";
+            return "redirect:../todo.html";
             // Equivalent to:
-            // Response.temporaryRedirect(URI.create("../todo.xhtml")).build();
+            // Response.temporaryRedirect(URI.create("../todo.html")).build();
         }
         models.put("userId", userId);
         models.put("loginError", true);
@@ -97,7 +97,7 @@ public class AuthenticationController implements Serializable {
             Optional<User> loginResult = userService.login(loginForm.getUserId(), loginForm.getPassword());
             if (loginResult.isPresent()) {
                 session.setAttribute("user", loginResult.get());
-                return "redirect:../todo.xhtml";
+                return "redirect:../facelets/todo.html";
 
             } else {
                 models.put("loginError", true);
