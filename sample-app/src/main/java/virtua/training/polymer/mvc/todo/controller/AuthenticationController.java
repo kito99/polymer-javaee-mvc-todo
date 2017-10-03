@@ -6,10 +6,10 @@ import virtua.training.polymer.mvc.todo.util.Messages;
 
 import javax.inject.Inject;
 import javax.mvc.Models;
+import javax.mvc.Viewable;
 import javax.mvc.annotation.Controller;
 import javax.mvc.annotation.CsrfValid;
 import javax.mvc.annotation.RedirectScoped;
-import javax.mvc.annotation.View;
 import javax.mvc.binding.BindingResult;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -68,7 +68,7 @@ public class AuthenticationController implements Serializable {
         Optional<User> loginResult = userService.login(userId, password);
         if (loginResult.isPresent()) {
             session.setAttribute("user", loginResult.get());
-            return "redirect:../todo.html";
+            return "redirect:../facelets/todo.html";
             // Equivalent to:
             // Response.temporaryRedirect(URI.create("../todo.html")).build();
         }
@@ -77,7 +77,6 @@ public class AuthenticationController implements Serializable {
         return "/login.jsp";
         // Equivalent to:
         // Viewable view = new Viewable("../login.jsp");
-        //Response.temporaryRedirect(URI.create("../login.jsp")).build();
     }
 
     /**
@@ -109,12 +108,12 @@ public class AuthenticationController implements Serializable {
 
     @Path("logout")
     @POST
-    public String logout() {
+    public Viewable logout() {
         if (user != null) {
             userService.logout(user);
             session.removeAttribute("user");
         }
-        return "/login.jsp";
+        return new Viewable("/login.jsp");
     }
 
 }

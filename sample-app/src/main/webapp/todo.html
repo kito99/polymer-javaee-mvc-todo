@@ -15,9 +15,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <head>
     <base href="${request.requestURI}"/>
     <meta charset="utf-8"/>
-    <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta name="generator" content="Polymer Starter Kit"/>
+
     <title>#{bundle['ApplicationName']}</title>
     <!-- Place favicon.ico in the `app/` directory -->
 
@@ -32,28 +31,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes"/>
-    <meta name="application-name" content="PSK"/>
-    <link rel="icon" sizes="192x192" href="../images/touch/chrome-touch-icon-192x192.png"/>
+    <meta name="application-name" content="${msgs.resourceBundle['ApplicationName']}"/>
+    <link rel="icon" sizes="192x192" href="${mvc.contextPath}/images/touch/chrome-touch-icon-192x192.png"/>
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <meta name="apple-mobile-web-app-title" content="Polymer Starter Kit"/>
-    <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" href="${mvc.contextPath}/images/touch/apple-touch-icon.png"/>
 
     <!-- Tile icon for Win8 (144x144) -->
-    <meta name="msapplication-TileImage" content="../images/touch/ms-touch-icon-144x144-precomposed.png"/>
+    <meta name="msapplication-TileImage"
+          content="${mvc.contextPath}/images/touch/ms-touch-icon-144x144-precomposed.png"/>
 
     <!-- build:css styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css"/>
+    <link rel="stylesheet" href="${mvc.contextPath}/styles/main.css"/>
     <!-- endbuild-->
 
     <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
-    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="${mvc.contextPath}/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <!-- endbuild -->
 
     <!-- will be replaced with elements/elements.vulcanized.html -->
-    <link rel="import" href="../elements/elements.html"/>
+    <link rel="import" href="${mvc.contextPath}/elements/elements.html"/>
     <!-- endreplace-->
 
     <!-- For shared styles, shared-styles.html import in elements.html -->
@@ -61,7 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 </head>
 
-<body unresolved="" class="fullbleed layout vertical">
+<body unresolved="true" class="fullbleed layout vertical">
 <span id="browser-sync-binding"></span>
 <template is="dom-bind" id="app">
 

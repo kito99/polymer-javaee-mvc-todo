@@ -103,15 +103,15 @@
                 },
 
                 _newTask: function (event) {
-                    var task = {new: true, name: "", completed: false, userId: this.userId};
+                    let task = {new: true, name: "", completed: false, userId: this.userId};
                     this.splice('tasks', 0, 0, task);
                     this.selectedTask = task;
                 },
 
                 _saveTask: function (event) {
                     // This is called before _selectTask, so we have to grab the value manually.
-                    var task = this._getTaskFromEvent(event);
-                    var ajaxElement;
+                    let task = this._getTaskFromEvent(event);
+                    let ajaxElement;
                     if (task.new) {
                         console.log("Adding task: " + task.name);
                         ajaxElement = this.$.ajaxAdd;
@@ -126,21 +126,21 @@
                 },
 
                 _addTaskComplete: function (event) {
-                    var taskFromServer = this.$.ajaxAdd.lastResponse;
+                    let taskFromServer = this.$.ajaxAdd.lastResponse;
                     this.selectedTask.id = taskFromServer.id;
                     this.selectedTask.new = false;
                 },
 
                 _deleteTask: function (event) {
                     // This is called before the _selectTask, so we have to grab the value manually.
-                    var task = this._getTaskFromEvent(event);
+                    let task = this._getTaskFromEvent(event);
                     this.$.ajaxDelete.url = this.getSelectedTaskUrl(task);
                     this.$.ajaxDelete.generateRequest();
                 },
 
                 _deleteTaskComplete: function (event) {
-                    var items = this.$.taskList.items;
-                    var index = items.indexOf(this.selectedTask);
+                    let items = this.$.taskList.items;
+                    let index = items.indexOf(this.selectedTask);
                     this.splice('tasks', index, 1);
                 },
 

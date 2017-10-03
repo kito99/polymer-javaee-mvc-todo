@@ -86,13 +86,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <!-- Use a standard form instead of <iron-form> because it uses Ajax and doesn't work with redirects -->
 
-            <!-- Submit to the controller method that does not user a form bean and does not do validation -->
-            <%--<form id="loginForm" method="post" action="${mvc.contextPath}${mvc.applicationPath}/login-no-validation"--%>
-            <%--disable-native-valid>--%>
+            <%--<!-- Submit to the controller method that does not user a form bean and does not do validation -->--%>
+            <%--<form id="loginForm" method="post" action="${mvc.contextPath}${mvc.applicationPath}/login-no-validation">--%>
 
-            <%--<!-- Submit to the controller method that uses a form bean and does validation -->--%>
-            <form id="loginForm" method="post" action="${mvc.contextPath}${mvc.applicationPath}/login-validation"
-                  disable-native-valid>
+            <!-- Submit to the controller method that uses a form bean and does validation -->
+            <form id="loginForm" method="post" action="${mvc.contextPath}${mvc.applicationPath}/login-validation">
 
                 <div class="vertical center layout login-panel">
 

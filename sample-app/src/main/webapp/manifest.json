@@ -1,6 +1,6 @@
 {
   "name": "polymer-javaee-mvc-todo",
-  "short_name": "Todo with Java EE MVC 1.0 and Polymer",
+  "short_name": "Todo with Java EE MVC 1.0  and Polymer",
   "icons": [{
         "src": "images/touch/icon-128x128.png",
         "sizes": "128x128",
