@@ -23,8 +23,9 @@ module.exports = function(grunt) {
     grunt.registerTask('server', ['connect']);
     
 	grunt.registerTask('build-readme', ['exec:readme']);	
-	grunt.registerTask('build-session', ['exec:session']);	
+	grunt.registerTask('build-session', ['exec:session']);
 
+	grunt.registerTask('build-pdf', ['exec:pdf']);
 	grunt.registerTask('default', ['build-readme', 'build-session']);
     
 };
